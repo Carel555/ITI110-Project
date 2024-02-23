@@ -1,2 +1,2 @@
-# ITI110-Project
+# ITI110-Project : Energy Consumption Prediction codes
 ITI110 Project codes files
