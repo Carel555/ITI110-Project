@@ -19,21 +19,10 @@ with custom_object_scope({'TCN': TCN}):
     #model = load_model(filepath + '0153-MAE-0.04-val_MAE-0.04-loss-0.04.h5')
     model = load_model(os.path.join(filepath, model_file))
 
-# Create a Streamlit app
-st.title('Your Energy Consumption Prediction App')
 
-def predict():
-  with st.sidebar:
-    # Create sliders for each feature
-    month = st.slider("Month of the year", min_value=1, max_value=12)
-    hour = st.slider("Hour of the day", min_value=0, max_value=23)
-    temperature = st.slider("Outside Temperature", min_value=0.0, max_value=50.0)
-    humidity = st.slider("What is the Humidity", min_value=0.0, max_value=1.0)
-    windSpeed = st.slider("Enter Windspeed", min_value=0.0, max_value=60.0)
-    holiday = st.slider("Is it a Holiday", min_value=0, max_value=1)
-
-    # Collect all features into a list
-    input_data = [month, hour, temperature, humidity, windSpeed, holiday]
+def predict(input_data):
+    # # Collect all features into a list
+    # input_data = [month, hour, temperature, humidity, windSpeed, holiday]
 
     # Convert the input data to a NumPy array
     input_data_as_numpy_array = np.asarray(input_data)
@@ -47,10 +36,29 @@ def predict():
 
     return predictions
 
-# Display the predictions on the Streamlit app
-predictions = predict()
+def main():
+    # Create a Streamlit app
+    st.title('Your Energy Consumption Prediction App')
 
-# Display the predictions on the Streamlit app
-if st.button('Predict'):
-    predictions = predict()
-    st.write(predictions)
+    # Getting input from users using slider
+    with st.sidebar:
+        # Create sliders for each feature
+        month = st.slider("Month of the year", min_value=1, max_value=12)
+        hour = st.slider("Hour of the day", min_value=0, max_value=23)
+        temperature = st.slider("Outside Temperature", min_value=0.0, max_value=50.0)
+        humidity = st.slider("What is the Humidity", min_value=0.0, max_value=1.0)
+        windSpeed = st.slider("Enter Windspeed", min_value=0.0, max_value=60.0)
+        holiday = st.slider("Is it a Holiday", min_value=0, max_value=1)
+    
+    # code for Prediction
+    results = ''
+
+    # creating a button for Prediction
+    if st.button('Predict'):
+        results = predict([month, hour, temperature, humidity, windSpeed, holiday])
+
+    st.success(results)
+
+
+if __name__ == '__main__':
+    main()
